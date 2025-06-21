@@ -1,12 +1,6 @@
 // Package model 定义模型类
 package model
 
-import (
-	"io"
-	"log/slog"
-	"net/http"
-)
-
 // MirrorSite
 //
 // Name: 镜像站名
@@ -18,18 +12,10 @@ type MirrorSite struct {
 	HomeUrl     string `json:"homeUrl"`
 }
 
-// TouchHomePage 检查主页面可访问性
-func (site *MirrorSite) TouchHomePage() bool {
-	resp, err := http.Get(site.HomeUrl)
-	if err != nil {
-		return false
-	}
-	defer resp.Body.Close()
+func (site *MirrorSite) GetName() string {
+	return site.Name
+}
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return false
-	}
-	slog.Debug("Home page: %s", string(body))
-	return true
+func (site *MirrorSite) GetHomeUrl() string {
+	return site.HomeUrl
 }

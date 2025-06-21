@@ -1,35 +1,48 @@
-// ! 用于检测各大网站及相应镜像站的脚本
+// Package main 用于检测各大网站及相应镜像站的脚本
 package main
 
 import (
 	"fmt"
 	"github.com/charmbracelet/lipgloss"
 	"mirrorfetch/list"
+	"mirrorfetch/model"
 )
 
-type CheckedResponse struct {
-	Name string
-	Ok   bool
+func main() {
+	fmt.Println("Starting MirrorFetch (http/https)")
+	fmt.Println("Sources:")
+	CheckNamedRemoteList(model.ToNamedRemoteList(list.MirrorSources))
+
+	// 开始检查镜像站连接情况
+	fmt.Println("Mirror Sites:")
+	CheckNamedRemoteList(model.ToNamedRemoteList(list.MirrorSites))
 }
 
-func main() {
-	mirrorCounts := len(list.Mirrors)
+func CheckNamedRemoteList(remotes []model.NamedRemote) {
+	var (
+		okStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#04B575")).MarginRight(1)
+		infoStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+		errorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#F92F60")).MarginRight(1)
+	)
 
-	responses := make(chan CheckedResponse, mirrorCounts)
-	for _, mirror := range list.Mirrors {
+	counts := len(remotes)
+	sourcesResp := make(chan model.HttpTracesResponse, counts)
+	for _, source := range remotes {
 		go func() {
-			responses <- CheckedResponse{Name: mirror.Name, Ok: mirror.TouchHomePage()}
+			sourcesResp <- model.TouchHome(source)
 		}()
 	}
 
-	for range mirrorCounts {
+	for range counts {
 		select {
-		case response := <-responses:
-			if response.Ok {
-				var style = lipgloss.NewStyle().Foreground(lipgloss.Color("#04B575"))
-				fmt.Println(response.Name, style.Render(" √"))
+		case response := <-sourcesResp:
+			if response.Reachable {
+				fmt.Println(okStyle.Render("✓"), response.Name,
+					infoStyle.Render(fmt.Sprintf("dns: %v conn: %v tls: %v total: %v",
+						response.DNSDuration, response.TCPDuration, response.TLSDuration, response.TotalDuration)))
 			} else {
-				fmt.Println("❌", response.Name)
+				fmt.Println(errorStyle.Render("✗"), response.Name,
+					infoStyle.Render(fmt.Sprintf("error: %v", response.ErrorMessage)))
 			}
 		}
 	}
