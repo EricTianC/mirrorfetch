@@ -8,46 +8,46 @@ var MirrorSites = []*model.MirrorSite{
 	{
 		Name:        "USTC Mirror",
 		Description: "中国科学技术大学开源软件镜像 Life, love, linux",
-		HomeUrl:     "https://mirrors.ustc.edu.cn/",
+		HomeURL:     "https://mirrors.ustc.edu.cn/",
 	},
 	{
 		Name:        "STJU Mirror",
 		Description: "由 上海交通大学 Linux 用户组 (SJTUG) 维护",
-		HomeUrl:     "https://mirror.sjtu.edu.cn/",
+		HomeURL:     "https://mirror.sjtu.edu.cn/",
 	},
 	{
 		Name:        "TUNA Mirror",
 		Description: "本站由清华大学信息化技术中心支持创办，由清华大学 TUNA 协会运行维护。",
-		HomeUrl:     "https://mirrors.tuna.tsinghua.edu.cn/",
+		HomeURL:     "https://mirrors.tuna.tsinghua.edu.cn/",
 	},
 	{
 		Name:        "NJU Mirror",
 		Description: "南京大学开源镜像站",
-		HomeUrl:     "https://mirrors.nju.edu.cn/",
+		HomeURL:     "https://mirrors.nju.edu.cn/",
 	},
 	{
 		Name:    "Aliyun",
-		HomeUrl: "https://mirrors.aliyun.com/",
+		HomeURL: "https://mirrors.aliyun.com/",
 	},
 	{
 		Name:        "Tencent Cloud",
 		Description: "腾讯云",
-		HomeUrl:     "https://mirrors.cloud.tencent.com/",
+		HomeURL:     "https://mirrors.cloud.tencent.com/",
 	},
 	{
 		Name:        "Huawei Clound",
 		Description: "华为云",
-		HomeUrl:     "https://mirrors.huaweicloud.com/home/",
+		HomeURL:     "https://mirrors.huaweicloud.com/home/",
 	},
 	{
 		Name:        "BFSU Mirror",
 		Description: "北京外国语大学开源镜像站",
-		HomeUrl:     "https://mirrors.bfsu.edu.cn/",
+		HomeURL:     "https://mirrors.bfsu.edu.cn/",
 	},
 	{
 		Name:        "SUSTech Mirror",
 		Description: "南方科技大学开源镜像站",
-		HomeUrl:     "https://mirrors.sustech.edu.cn/",
+		HomeURL:     "https://mirrors.sustech.edu.cn/",
 	},
 }
 
@@ -55,20 +55,20 @@ var MirrorSources = []*model.MirrorSource{
 	{
 		Name:        "Github",
 		Description: "Where the world build software",
-		HomeUrl:     "https://github.com/",
+		HomeURL:     "https://github.com/",
 	},
 	{
 		Name:        "Pypi",
 		Description: "pip packages",
-		HomeUrl:     "https://www.pypi.org",
+		HomeURL:     "https://www.pypi.org",
 	},
 	{
 		Name:    "Docker Hub",
-		HomeUrl: "https://hub.docker.com/",
+		HomeURL: "https://hub.docker.com/",
 	},
 	{
 		Name:        "Go Proxy",
 		Description: "Go 模块的依赖缓存服务器",
-		HomeUrl:     "https://goproxy.io", // TODO: 抽象出 MirrorService 以表达非直接镜像源地址的镜像服务
+		HomeURL:     "https://goproxy.io", // TODO: 抽象出 MirrorService 以表达非直接镜像源地址的镜像服务
 	},
 }

@@ -9,13 +9,13 @@ package model
 type MirrorSite struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
-	HomeUrl     string `json:"homeUrl"`
+	HomeURL     string `json:"homeUrl"`
 }
 
 func (site *MirrorSite) GetName() string {
 	return site.Name
 }
 
-func (site *MirrorSite) GetHomeUrl() string {
-	return site.HomeUrl
+func (site *MirrorSite) GetHomeURL() string {
+	return site.HomeURL
 }

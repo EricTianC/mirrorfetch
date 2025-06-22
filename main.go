@@ -27,7 +27,7 @@ func CheckNamedRemoteList(remotes []model.NamedRemote) {
 	)
 
 	counts := len(remotes)
-	sourcesResp := make(chan model.HttpTracesResponse, counts)
+	sourcesResp := make(chan model.HTTPTracesResponse, counts)
 	for _, source := range remotes {
 		go func() {
 			sourcesResp <- model.TouchHome(source)

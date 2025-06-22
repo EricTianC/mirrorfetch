@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type HttpTracesResponse struct {
+type HTTPTracesResponse struct {
 	Name          string        `json:"name"`
 	Reachable     bool          `json:"reachable"`
 	DNSDuration   time.Duration `json:"dns_duration"`
@@ -22,19 +22,19 @@ type HttpTracesResponse struct {
 
 type NamedRemote interface {
 	GetName() string
-	GetHomeUrl() string
+	GetHomeURL() string
 }
 
-func TouchHome(source NamedRemote) HttpTracesResponse {
+func TouchHome(source NamedRemote) HTTPTracesResponse {
 	var (
 		dnsStart, dnsDone   time.Time
 		connStart, connDone time.Time
 		tlsStart, tlsDone   time.Time
 	)
 
-	response := HttpTracesResponse{Name: source.GetName()}
+	response := HTTPTracesResponse{Name: source.GetName()}
 
-	req, err := http.NewRequest("GET", source.GetHomeUrl(), nil)
+	req, err := http.NewRequest("GET", source.GetHomeURL(), nil)
 	if err != nil {
 		response.ErrorMessage = err.Error()
 		return response
@@ -79,7 +79,7 @@ func TouchHome(source NamedRemote) HttpTracesResponse {
 	}
 	defer resp.Body.Close()
 
-	response = HttpTracesResponse{
+	response = HTTPTracesResponse{
 		Name:          source.GetName(),
 		Reachable:     true,
 		DNSDuration:   dnsDone.Sub(dnsStart),
