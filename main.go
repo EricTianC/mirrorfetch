@@ -3,9 +3,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/charmbracelet/lipgloss"
 	"mirrorfetch/list"
 	"mirrorfetch/model"
+
+	"github.com/charmbracelet/lipgloss"
 )
 
 func main() {
@@ -34,16 +35,14 @@ func CheckNamedRemoteList(remotes []model.NamedRemote) {
 	}
 
 	for range counts {
-		select {
-		case response := <-sourcesResp:
-			if response.Reachable {
-				fmt.Println(okStyle.Render("✓"), response.Name,
-					infoStyle.Render(fmt.Sprintf("dns: %v conn: %v tls: %v total: %v",
-						response.DNSDuration, response.TCPDuration, response.TLSDuration, response.TotalDuration)))
-			} else {
-				fmt.Println(errorStyle.Render("✗"), response.Name,
-					infoStyle.Render(fmt.Sprintf("error: %v", response.ErrorMessage)))
-			}
+		response := <-sourcesResp
+		if response.Reachable {
+			fmt.Println(okStyle.Render("✓"), response.Name,
+				infoStyle.Render(fmt.Sprintf("dns: %v conn: %v tls: %v total: %v",
+					response.DNSDuration, response.TCPDuration, response.TLSDuration, response.TotalDuration)))
+		} else {
+			fmt.Println(errorStyle.Render("✗"), response.Name,
+				infoStyle.Render(fmt.Sprintf("error: %v", response.ErrorMessage)))
 		}
 	}
 }

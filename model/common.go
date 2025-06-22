@@ -1,3 +1,4 @@
+// Package model 储存公用的数据类型及方法
 package model
 
 import (

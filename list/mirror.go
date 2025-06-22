@@ -25,6 +25,30 @@ var MirrorSites = []*model.MirrorSite{
 		Description: "南京大学开源镜像站",
 		HomeUrl:     "https://mirrors.nju.edu.cn/",
 	},
+	{
+		Name:    "Aliyun",
+		HomeUrl: "https://mirrors.aliyun.com/",
+	},
+	{
+		Name:        "Tencent Cloud",
+		Description: "腾讯云",
+		HomeUrl:     "https://mirrors.cloud.tencent.com/",
+	},
+	{
+		Name:        "Huawei Clound",
+		Description: "华为云",
+		HomeUrl:     "https://mirrors.huaweicloud.com/home/",
+	},
+	{
+		Name:        "BFSU Mirror",
+		Description: "北京外国语大学开源镜像站",
+		HomeUrl:     "https://mirrors.bfsu.edu.cn/",
+	},
+	{
+		Name:        "SUSTech Mirror",
+		Description: "南方科技大学开源镜像站",
+		HomeUrl:     "https://mirrors.sustech.edu.cn/",
+	},
 }
 
 var MirrorSources = []*model.MirrorSource{
@@ -41,5 +65,10 @@ var MirrorSources = []*model.MirrorSource{
 	{
 		Name:    "Docker Hub",
 		HomeUrl: "https://hub.docker.com/",
+	},
+	{
+		Name:        "Go Proxy",
+		Description: "Go 模块的依赖缓存服务器",
+		HomeUrl:     "https://goproxy.io", // TODO: 抽象出 MirrorService 以表达非直接镜像源地址的镜像服务
 	},
 }

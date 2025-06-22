@@ -1,7 +1,7 @@
 // Package model 定义模型类
 package model
 
-// MirrorSite
+// MirrorSite struct
 //
 // Name: 镜像站名
 // Description: 简单描述
