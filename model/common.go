@@ -3,6 +3,7 @@ package model
 
 import (
 	"crypto/tls"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/http/httptrace"
@@ -20,12 +21,29 @@ type HTTPTracesResponse struct {
 	ErrorMessage  string        `json:"error_message"`
 }
 
-type NamedRemote interface {
-	GetName() string
-	GetHomeURL() string
+func (h HTTPTracesResponse) GetName() string {
+	return h.Name
 }
 
-func TouchHome(source NamedRemote) HTTPTracesResponse {
+func (h HTTPTracesResponse) Ok() bool {
+	return h.Reachable
+}
+
+func (h HTTPTracesResponse) ToInfo() string {
+	if h.Reachable {
+		return fmt.Sprintf("dns: %v conn: %v tls: %v total: %v",
+			h.DNSDuration, h.TCPDuration, h.TLSDuration, h.TotalDuration)
+	} else {
+		return h.ErrorMessage
+	}
+}
+
+type HTTPRemote interface {
+	GetName() string
+	GetURL() string
+}
+
+func TouchHome(source HTTPRemote) HTTPTracesResponse {
 	var (
 		dnsStart, dnsDone   time.Time
 		connStart, connDone time.Time
@@ -34,7 +52,7 @@ func TouchHome(source NamedRemote) HTTPTracesResponse {
 
 	response := HTTPTracesResponse{Name: source.GetName()}
 
-	req, err := http.NewRequest("GET", source.GetHomeURL(), nil)
+	req, err := http.NewRequest("GET", source.GetURL(), nil)
 	if err != nil {
 		response.ErrorMessage = err.Error()
 		return response
@@ -91,8 +109,8 @@ func TouchHome(source NamedRemote) HTTPTracesResponse {
 	return response
 }
 
-func ToNamedRemoteList[T NamedRemote](sources []T) []NamedRemote {
-	ret := make([]NamedRemote, len(sources))
+func ToNamedRemoteList[T HTTPRemote](sources []T) []HTTPRemote {
+	ret := make([]HTTPRemote, len(sources))
 	for i, source := range sources {
 		ret[i] = source
 	}

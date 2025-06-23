@@ -3,8 +3,8 @@ package main
 
 import (
 	"fmt"
-	"mirrorfetch/list"
-	"mirrorfetch/model"
+	"github.com/erictianc/mirrorfetch/data"
+	"github.com/erictianc/mirrorfetch/model"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -12,14 +12,17 @@ import (
 func main() {
 	fmt.Println("Starting MirrorFetch (http/https)")
 	fmt.Println("Sources:")
-	CheckNamedRemoteList(model.ToNamedRemoteList(list.MirrorSources))
+	CheckNamedRemoteList(model.ToNamedRemoteList(data.MirrorSources))
 
 	// 开始检查镜像站连接情况
 	fmt.Println("Mirror Sites:")
-	CheckNamedRemoteList(model.ToNamedRemoteList(list.MirrorSites))
+	CheckNamedRemoteList(model.ToNamedRemoteList(data.MirrorSites))
+
+	fmt.Println("Services:")
+
 }
 
-func CheckNamedRemoteList(remotes []model.NamedRemote) {
+func CheckNamedRemoteList(remotes []model.HTTPRemote) {
 	var (
 		okStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#04B575")).MarginRight(1)
 		infoStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
@@ -27,7 +30,7 @@ func CheckNamedRemoteList(remotes []model.NamedRemote) {
 	)
 
 	counts := len(remotes)
-	sourcesResp := make(chan model.HTTPTracesResponse, counts)
+	sourcesResp := make(chan model.TestResult, counts)
 	for _, source := range remotes {
 		go func() {
 			sourcesResp <- model.TouchHome(source)
@@ -36,13 +39,12 @@ func CheckNamedRemoteList(remotes []model.NamedRemote) {
 
 	for range counts {
 		response := <-sourcesResp
-		if response.Reachable {
-			fmt.Println(okStyle.Render("✓"), response.Name,
-				infoStyle.Render(fmt.Sprintf("dns: %v conn: %v tls: %v total: %v",
-					response.DNSDuration, response.TCPDuration, response.TLSDuration, response.TotalDuration)))
+		if response.Ok() {
+			fmt.Println(okStyle.Render("✓"), response.GetName(),
+				infoStyle.Render(response.ToInfo()))
 		} else {
-			fmt.Println(errorStyle.Render("✗"), response.Name,
-				infoStyle.Render(fmt.Sprintf("error: %v", response.ErrorMessage)))
+			fmt.Println(errorStyle.Render("✗"), response.GetName(),
+				infoStyle.Render(fmt.Sprintf("error: %v", response.ToInfo())))
 		}
 	}
 }

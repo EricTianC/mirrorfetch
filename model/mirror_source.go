@@ -10,6 +10,6 @@ func (source *MirrorSource) GetName() string {
 	return source.Name
 }
 
-func (source *MirrorSource) GetHomeURL() string {
+func (source *MirrorSource) GetURL() string {
 	return source.HomeURL
 }

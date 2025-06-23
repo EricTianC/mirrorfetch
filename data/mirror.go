@@ -1,8 +1,8 @@
-// Package list
+// Package data
 // 预存储各镜像网站地址
-package list
+package data
 
-import "mirrorfetch/model"
+import "github.com/erictianc/mirrorfetch/model"
 
 var MirrorSites = []*model.MirrorSite{
 	{
@@ -14,6 +14,24 @@ var MirrorSites = []*model.MirrorSite{
 		Name:        "STJU Mirror",
 		Description: "由 上海交通大学 Linux 用户组 (SJTUG) 维护",
 		HomeURL:     "https://mirror.sjtu.edu.cn/",
+		ServiceProviders: []model.ServiceProvider{
+			{
+				ID:          "Lean4/Elan",
+				Description: "上交 s3 存储的 Elan 镜像",
+				TestTarget: model.TestSpec{
+					Sort: "s3",
+					URL:  "https://mirrors.sjtug.sjtu.edu.cn/elan/?mirror_intel_list",
+				},
+			},
+			{
+				ID:          "Lean4/GithubRepo/Mathlib",
+				Description: "Mathlib4 仓库镜像",
+				TestTarget: model.TestSpec{
+					Sort: "git",
+					URL:  "https://mirror.sjtu.edu.cn/git/lean4-packages/mathlib4/",
+				},
+			},
+		},
 	},
 	{
 		Name:        "TUNA Mirror",
@@ -69,6 +87,6 @@ var MirrorSources = []*model.MirrorSource{
 	{
 		Name:        "Go Proxy",
 		Description: "Go 模块的依赖缓存服务器",
-		HomeURL:     "https://goproxy.io", // TODO: 抽象出 MirrorService 以表达非直接镜像源地址的镜像服务
+		HomeURL:     "https://goproxy.io",
 	},
 }

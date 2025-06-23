@@ -22,7 +22,7 @@ func TraceHttpRequest(url string) error {
 		dnsStart, dnsDone   time.Time
 		connStart, connDone time.Time
 		tlsStart, tlsDone   time.Time
-		//firstByteTime       time.Time
+		// firstByteTime       time.Time
 	)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -59,7 +59,7 @@ func TraceHttpRequest(url string) error {
 			}
 		},
 		GotFirstResponseByte: func() {
-			//firstByteTime = time.Now()
+			// firstByteTime = time.Now()
 			fmt.Println("📥 首字节已接收")
 		},
 	}
